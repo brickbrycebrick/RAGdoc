@@ -154,8 +154,3 @@ The system implements sophisticated rate limiting and batch processing:
 - Automatic retries
 - Error handling
 - Progress tracking
-
-## Acknowledgments
-
-- Cole Medin's RAG Videos
-- Cursor
