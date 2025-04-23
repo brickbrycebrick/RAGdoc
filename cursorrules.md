@@ -10,13 +10,6 @@ We are using the following technologies:
 - Pydantic
 - Crawl4AI
 
-File descriptions:
-- site_pages.sql: This is the supabase database that will store the documentation as well as code for the match_site_pages function
-- content_processor.py: This is the python file that will process the documents and code blocks to extract the most relevant information
-- streamlit_ui.py: This is the streamlit file that will allow the user to interact with the system
-- crawl_pydantic_ai_docs.py: This is the python file that will scrape the pydantic ai docs website
-- pydantic_ai_expert.py: This is the python file that will contain the pydantic agents
-
 In supabase, the site_pages table has the following columns:
     id bigserial primary key,
     url varchar not null,
