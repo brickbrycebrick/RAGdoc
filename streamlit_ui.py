@@ -112,8 +112,8 @@ async def get_unique_sources(supabase: Client) -> list[str]:
 
 
 async def main():
-    st.title("Pydantic AI Agentic RAG")
-    st.write("Ask any question about Pydantic AI, the hidden truths of the beauty of this framework lie within.")
+    st.title("AI Agentic RAG")
+    st.write("Ask your questions here")
 
     # Get unique sources for filtering
     if "sources" not in st.session_state:
@@ -139,7 +139,7 @@ async def main():
                 display_message_part(part)
 
     # Chat input for the user
-    user_input = st.chat_input("What questions do you have about Pydantic AI?")
+    user_input = st.chat_input("What questions do you have?")
 
     if user_input:
         # We append a new request to the conversation explicitly
