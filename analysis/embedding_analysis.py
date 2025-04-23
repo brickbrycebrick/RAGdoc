@@ -46,7 +46,7 @@ def create_embeddings(data: List[Dict]):
         definitions = atlas.map_data(
             df, 
             indexed_field="definition", 
-            identifier="Documentation Definitions", 
+            identifier="Documentation Definitions v2", 
             topic_model=True
             )
             

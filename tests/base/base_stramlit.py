@@ -22,7 +22,7 @@ from pydantic_ai.messages import (
     RetryPromptPart,
     ModelMessagesTypeAdapter
 )
-from agent import pydantic_ai_expert, PydanticAIDeps
+from base_agent import pydantic_ai_expert, PydanticAIDeps
 
 # Load environment variables
 from dotenv import load_dotenv
@@ -65,7 +65,7 @@ def display_message_part(part):
             st.markdown(part.content)          
 
 
-async def run_agent_with_streaming(user_input: str, selected_sources: list[str]):
+async def run_agent_with_streaming(user_input: str):
     """
     Run the agent with streaming text for the user_input prompt,
     while maintaining the entire conversation in `st.session_state.messages`.
@@ -73,15 +73,14 @@ async def run_agent_with_streaming(user_input: str, selected_sources: list[str])
     # Prepare dependencies
     deps = PydanticAIDeps(
         supabase=supabase,
-        openai_client=openai_client,
-        selected_sources=selected_sources
+        openai_client=openai_client
     )
 
     # Run the agent in a stream
     async with pydantic_ai_expert.run_stream(
         user_input,
         deps=deps,
-        message_history=st.session_state.messages[:-1],  # pass entire conversation so far
+        message_history= st.session_state.messages[:-1],  # pass entire conversation so far
     ) as result:
         # We'll gather partial text to show incrementally
         partial_text = ""
@@ -105,26 +104,9 @@ async def run_agent_with_streaming(user_input: str, selected_sources: list[str])
         )
 
 
-async def get_unique_sources(supabase: Client) -> list[str]:
-    """Fetch unique sources from Supabase."""
-    result = supabase.rpc('get_unique_sources').execute()
-    return [source['source'] for source in result.data]
-
-
 async def main():
-    st.title("AI Agentic RAG")
-    st.write("Ask your questions here")
-
-    # Get unique sources for filtering
-    if "sources" not in st.session_state:
-        st.session_state.sources = await get_unique_sources(supabase)
-
-    # Add source filter multiselect
-    selected_sources = st.multiselect(
-        "Select documentation sources to search:",
-        st.session_state.sources,
-        default=st.session_state.sources
-    )
+    st.title("Pydantic AI Agentic RAG")
+    st.write("Ask any question about Pydantic AI, the hidden truths of the beauty of this framework lie within.")
 
     # Initialize chat history in session state if not present
     if "messages" not in st.session_state:
@@ -139,7 +121,7 @@ async def main():
                 display_message_part(part)
 
     # Chat input for the user
-    user_input = st.chat_input("What questions do you have?")
+    user_input = st.chat_input("What questions do you have about Pydantic AI?")
 
     if user_input:
         # We append a new request to the conversation explicitly
@@ -153,8 +135,8 @@ async def main():
 
         # Display the assistant's partial response while streaming
         with st.chat_message("assistant"):
-            # Actually run the agent now, streaming the text with selected sources
-            await run_agent_with_streaming(user_input, selected_sources)
+            # Actually run the agent now, streaming the text
+            await run_agent_with_streaming(user_input)
 
 
 if __name__ == "__main__":
